@@ -43,17 +43,22 @@ server.get('/api/users', (req, res) => {
 })
 
 // (3) get request - an individual user
-server.get('/api/users/:id', (req, res) => {
+server.get('/api/users/:id',  (req, res) => {
     Users.findById(req.params.id).then((user) => {
         // if (res.length > 0) {
         //     res.status(200).json(user)
         // } else {
         //     res.status(404).json({ error_message: "The user with the specified id is not found."})
         // }
-        res.status(200).json(user)
+        if (typeof user === 'object') {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({ error_message: "The user with this id could not be found."})
+        }
     }).catch((error) => {
-        res.status(500).json({ error_message: "The user information could not be retrieved."})
+        res.status(500).json({ error_message: "The user could not be retrieved."})
     })
+
 })
 
 
