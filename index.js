@@ -73,6 +73,17 @@ Users.remove(req.params.id).then((num) => {
 })
 })
 
+// (5) put request - update an individual user
+server.put('/api/users/:id', (req, res) => {
+    const updatedUser = req.body
+
+    Users.update(req.params.id, updatedUser).then((num) => {
+        res.status(200).json(num)
+    }).catch((error) => {
+        res.status(500).json({ error_message: "User could not be updated." })
+    })
+})
+
 
 
 
