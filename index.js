@@ -58,7 +58,19 @@ server.get('/api/users/:id',  (req, res) => {
     }).catch((error) => {
         res.status(500).json({ error_message: "The user could not be retrieved."})
     })
+})
 
+// (4) delete request - an individual user
+server.delete('/api/users/:id', (req,res) => {
+Users.remove(req.params.id).then((num) => {
+    if (num === 1) {
+        res.status(200).json(num)
+    } else {
+        res.status(404).json({ error_message: "The user with this id could not be deleted."})
+    }
+}).catch((error) => {
+    res.status(500).json({ error_message: "This user could not be deleted. "})
+})
 })
 
 
