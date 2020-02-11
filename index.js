@@ -1,10 +1,12 @@
 // import 
 const express = require('express')
-
+const cors = require('cors')
 // declare server
 const server = express()
 // Teach express JSON
 server.use(express.json())
+// Bring cors
+server.use(cors())
 // Bring in the data
 const Users = require('./data/db.js')
 
@@ -78,9 +80,17 @@ server.put('/api/users/:id', (req, res) => {
     const updatedUser = req.body
 
     Users.update(req.params.id, updatedUser).then((num) => {
-        res.status(200).json(num)
+        if (num === 1 && updatedUser.name.length > 0 && updatedUser.bio.length > 0) {
+            res.status(200).json(num)
+        } else {
+            res.status(404).json({ error_message: "This user cannot be found"})
+        } 
     }).catch((error) => {
-        res.status(500).json({ error_message: "User could not be updated." })
+        if (!updatedUser.name || !updatedUser.bio) {
+            res.status(400).json({ error_message: "Please provide a username and a bio." })
+        } else {
+            res.status(500).json({ error_message: "This user could not be modified." })
+        }
     })
 })
 
