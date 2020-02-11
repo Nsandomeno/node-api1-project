@@ -22,15 +22,24 @@ server.get('/', (req, res) => {
 server.post('/api/users', (req, res) => {
     const newUser = req.body
 
-    if (newUser.name && newUser.bio) {
+    // if (newUser.name && newUser.bio) {
+    //     Users.insert(newUser).then((user) => {
+    //         console.log("This is the response from new user post:", user)
+    //         res.status(201).json(user)
+    //     }).catch((error) => {
+    //         res.status(400).json({ error_message: "Please provide a name and a bio for the new user."})
+    //     })
+    // } else {
+    //     res.status(500).json({ error_message: "There was an error while saving the user to the database."})
+    // }
+    if (!newUser.name || !newUser.bio) {
+        res.status(400).json({ error_message: "Please provide a name and a bio." })
+    } else {
         Users.insert(newUser).then((user) => {
-            console.log("This is the response from new user post:", user)
             res.status(201).json(user)
         }).catch((error) => {
-            res.status(400).json({ error_message: "Please provide a name and a bio for the new user."})
+            res.status(500).json({ error_message: "There was an error while saving the user to the database." })
         })
-    } else {
-        res.status(500).json({ error_message: "There was an error while saving the user to the database."})
     }
 })
 
