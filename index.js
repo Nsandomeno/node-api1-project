@@ -1,3 +1,4 @@
+
 // import 
 const express = require('express')
 const cors = require('cors')
@@ -108,4 +109,5 @@ server.put('/api/users/:id', (req, res) => {
 
 
 // initiate the server
-server.listen(5000, () => console.log("API is running on port 5000."))
+const port = process.env.PORT || 5000
+server.listen(port, () => console.log("API is running on port 5000."))
